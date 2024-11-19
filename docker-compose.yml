@@ -1,0 +1,11 @@
+services:
+  ovh-eco-hunter:
+    image: repo.theadam.eu/ovh-eco-autoorder/ovh-eco-autoorder
+    build: .
+    restart: always
+    volumes:
+      - ./offers.json:/app/offers.json
+      - ./preferences.json:/app/preferences.json
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    user: 1000:1000
