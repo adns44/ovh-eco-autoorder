@@ -6,6 +6,7 @@ services:
     volumes:
       - ./offers.json:/app/offers.json
       - ./preferences.json:/app/preferences.json
+      - ./.env:/app/.env:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     user: 1000:1000
