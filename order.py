@@ -187,7 +187,7 @@ def place_order(client, item, dc):
         order_result={}
         try:
             order_result = client.post("/order/cart/"+item["dc_carts"][dedicated_datacenter]["cartId"]+"/checkout",
-                autoPayWithPreferredPaymentMethod = item["autoPayWithPreferredPaymentMethod"], # Indicates that order will be automatically paid with preferred payment method (type: boolean)
+                autoPayWithPreferredPaymentMethod = item["autopay"], # Indicates that order will be automatically paid with preferred payment method (type: boolean)
                 waiveRetractationPeriod = True, # Indicates that order will be processed with waiving retractation period (type: boolean)
             )
             logging.info("Success! Order placed. Check the raw order in the cart for more info!")
