@@ -163,4 +163,5 @@ If you run it in Docker, bind the `preferences.json` to `/app` directory and bin
 ## Run it in Docker
 
 Clone this repo and run 
+`docker compose build`
 `docker compose up -d`.
