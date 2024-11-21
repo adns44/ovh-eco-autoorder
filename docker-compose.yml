@@ -1,6 +1,6 @@
 services:
   ovh-eco-hunter:
-    image: repo.theadam.eu/ovh-eco-autoorder/ovh-eco-autoorder
+    image: adns44/ovh-eco-autoorder
     build: .
     restart: always
     volumes:
