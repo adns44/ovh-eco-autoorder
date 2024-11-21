@@ -165,3 +165,7 @@ If you run it in Docker, bind the `preferences.json` to `/app` directory and bin
 Clone this repo and run 
 `docker compose build`
 `docker compose up -d`.
+
+# Remarks
+
+This script uses the OVHcloud API. The ECO and other names are owned by the OVHcloud.
