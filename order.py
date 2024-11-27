@@ -33,17 +33,11 @@ client = ovh.Client()
 
 
 def fetch_dcs():
-    global all_dc
+    global all_dc, client
     while True:
-        req = urllib.request.Request(
-            url="https://eu.api.ovh.com/v1/dedicated/server/datacenter/availabilities?excludeDatacenters=false",
-            data=None, 
-            headers={"user-agent": "curl"}
-            )
         try:
-            with urllib.request.urlopen(req,timeout=10) as response:
-                all_dc = json.loads(response.read().decode("utf-8"))
-                logging.debug("Fetched availabilities: "+str(len(all_dc)))
+            all_dc = client.get("/dedicated/server/datacenter/availabilities")
+            logging.debug("Fetched availabilities: "+str(len(all_dc)))
         except Exception:
             logging.debug("Datacenter fetching failed.")
         time.sleep(3)
@@ -82,6 +76,7 @@ def init_cart(client):
         ovhSubsidiary = user_preferences["subsidiary"], # OVH Subsidiary where you want to order (type: nichandle.OvhSubsidiaryEnum)
         description = None, # Description of your cart (type: string)
     )
+    time.sleep(1)
     res2 = client.post("/order/cart/"+result["cartId"]+"/assign")
     logging.debug("Cart created and assigned to your OVH account.")
     return result

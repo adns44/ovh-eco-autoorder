@@ -18,6 +18,7 @@ Project based on [OVHcloud Python wrapper](https://github.com/ovh/python-ovh), c
 ### Set up the API
 
 Create an API key [here](https://api.ovh.com/createToken/index.cgi?GET=/*&PUT=/*&POST=/*&DELETE=/*) and write down its information.
+> Note: Select the proper expiration. Best option is 30 days, avoid to use unlimited access, it is more secure if you recreate it every 30 days.
 Create a `.env` file to allow dotenv to read it and place the settings in here.
 ```
 OVH_ENDPOINT='ovh-eu'
@@ -25,6 +26,8 @@ OVH_APPLICATION_KEY='XXX'
 OVH_APPLICATION_SECRET='XXX'
 OVH_CONSUMER_KEY='XXX'
 ```
+> Endpoints available on the uper link, use it that matches with your account.
+> I suggest to use VsCode to create the files and manage them.
 
 ### Set up your desired orders
 
@@ -94,9 +97,17 @@ So when you first start the script after a personalised configuration, it will f
 When it expires (after a month) the script creates a new one.
 Only servers checked and planned that have higher qty than zero.
 
+Subsidiary: Depends on your API endpoint. Used at creating orders. You can fetch subsidiary list and select yours, depending on your account.
+- [CA](https://ca.api.ovh.com/console/?section=%2Fdedicated%2Fserver&branch=v1#get-/dedicated/server/availabilities)
+- [EU](https://eu.api.ovh.com/console/?section=%2Fdedicated%2Fserver&branch=v1#get-/dedicated/server/availabilities)
+- [US](https://api.us.ovhcloud.com/console/?section=%2Forder&branch=v1#get-/order/catalog/public/eco)
+> always use capitalized letters.
+
 ### Autofill from catalog
 
 > This feature is very very experimental. Use it on your own risk!!!
+
+> This feature fetches the EU API catalog. In the future it will be compatible with CA and US.
 
 You can Instruct the API to look the server catalog and fetch the data from it when available.
 This feature helps you if you want to grab a server which shown on availability API but not available on the catalog yet. For example KS-LE-2 appeared in October as 25skle02 with low stock in rbx. If you set it you can order it after OVH fills it up into the cart.
