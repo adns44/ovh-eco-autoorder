@@ -61,7 +61,9 @@ def is_dc_available(all, desired, fqn):
 def next_cart_expiration_date():
     current_time = datetime.now()
     if current_time.month == 12:
-        one_month_later = current_time.replace(month=current_time.year + 1)
+        one_month_later = current_time.replace(month=1)
+        one_month_later = one_month_later.replace(year = current_time.year + 1)
+        print(one_month_later)
     else:
         one_month_later = current_time.replace(month=current_time.month + 1)
     out_string = one_month_later.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -74,7 +76,7 @@ def init_cart(client):
     result = client.post("/order/cart",
         expire = next_cart_expiration_date(), # Time of expiration of the cart (type: string)
         ovhSubsidiary = user_preferences["subsidiary"], # OVH Subsidiary where you want to order (type: nichandle.OvhSubsidiaryEnum)
-        description = None, # Description of your cart (type: string)
+        description = "Cart set up by OVH Eco Autoorder", # Description of your cart (type: string)
     )
     time.sleep(1)
     res2 = client.post("/order/cart/"+result["cartId"]+"/assign")
@@ -153,6 +155,13 @@ def fill_cart(client, item, dc):
         itemId=result["itemId"]
         logging.debug("Added planCode "+i+" with ID "+str(itemId))
         item["dc_carts"][dedicated_datacenter]["itemIds"].append(itemId)
+
+    logging.debug("Adding coupons (if any) to the cart "+str(item["dc_carts"][dedicated_datacenter]["cartId"]))
+    for i in item["coupons"]:
+        logging.debug("Adding coupon to cart "+i)
+        result = client.post("/order/cart/"+item["dc_carts"][dedicated_datacenter]["cartId"]+"/coupon",
+            coupon = i # Coupon identifier (type: string)
+        )
     logging.info("OK created cart.")
     return True
 

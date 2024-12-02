@@ -44,7 +44,8 @@ Here is an example JSON contents for it.
       "fqn": "25skleb01.ram-32g-ecc-2400.softraid-2x450nvme",
       "skip_validate": false,
       "place_order": false,
-      "autoPayWithPreferredPaymentMethod": false,
+      "autopay": false,
+      "coupons": ["MONDAY"],
       "datacenters": [
         {
           "region": "europe",
@@ -89,8 +90,9 @@ A server contains a few important information
 > If order validation skiped, ceiling price omitted and product ordered on any price. It makes the speed faster.
 - place_order: Set it explicitly to true. If you do not do it, only an order plan will be created.
 > Keep in mind that if this set to false, the quantity set to 0 after the validation. So if you create an order and only validate it, to order it, close the APP, set quantity and restart it. This behaviour fixes the issue that multiple rechecks increases network load and time consumed by the script.
-- autoPayWithPreferredPaymentMethod: Controls that after the order, payment processed automaticaly or not
+- autopay: Controls that after the order, payment processed automaticaly or not
 > If you set this to false, until you do not pay the order it is not placed so you can lose your chance to get the server.
+- coupons: An array which contains the coupon codes for the order
 - dc_carts: Empty, it stores the datacenter-specific cart informations. By default do not need manual modification.
 
 So when you first start the script after a personalised configuration, it will fill up the cart information(s) based on your needs.
@@ -126,6 +128,7 @@ Here is the raw JSON for this. You can combine multiple servers with multiple op
       "skip_validate": false,
       "place_order": false,
       "autopay": false,
+      "coupons": ["MONDAY"],
       "fetch_catalog": {
         "storage": "",
         "memory": "",
