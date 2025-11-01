@@ -63,9 +63,9 @@ def next_cart_expiration_date():
     if current_time.month == 12:
         one_month_later = current_time.replace(month=1)
         one_month_later = one_month_later.replace(year = current_time.year + 1)
-        print(one_month_later)
     else:
         one_month_later = current_time.replace(month=current_time.month + 1)
+        one_month_later = one_month_later.replace(day=27)
     out_string = one_month_later.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
     logging.debug("New expiration generated "+out_string)
     return out_string
