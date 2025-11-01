@@ -114,7 +114,7 @@ def fill_cart(client, item, dc):
     result = None
     dedicated_datacenter=dc["dedicated_datacenter"]
     region=dc["region"]
-    logging.info("Starting fill cart. The fqn is "+item["fqn"]+" and datacenter is "+dedicated_datacenter)
+    logging.info("Starting fill cart. The plancode is "+item["planCode"]+" fqn is "+item["fqn"]+" and datacenter is "+dedicated_datacenter)
     try:
         result = client.post("/order/cart/"+item["dc_carts"][dedicated_datacenter]["cartId"]+"/eco",
             planCode = item["planCode"], # Identifier of the offer (type: string)
@@ -172,8 +172,10 @@ def place_order(client, item, dc):
     if "skip_validate" not in item or item["skip_validate"] == False:
         logging.info("Validating the order. Check for cartId in your settings file "+item["dc_carts"][dedicated_datacenter]["cartId"]+" for more info")
         try:
+            logging.info("Fetch the cart.")
             result = client.get("/order/cart/"+item["dc_carts"][dedicated_datacenter]["cartId"]+"/summary")
         except Exception:
+            logging.info("Can not fetch cart!")
             return False
         logging.info("Iterating cart...")
         for i in result["details"]:
@@ -181,7 +183,7 @@ def place_order(client, item, dc):
             logging.info(str(i["unitPrice"]["value"])+" "+i["unitPrice"]["currencyCode"])
         logging.info("Total: "+str(result["prices"]["withoutTax"]["value"])+" "+str(result["prices"]["withoutTax"]["currencyCode"]))
         item["dc_carts"][dedicated_datacenter]["raw_cart"] = result
-        if result["prices"]["withoutTax"]["value"] <= item["ceiling_price"]:
+        if (result["prices"]["withoutTax"]["value"] >= item["ceiling_price"]):
             logging.info("Too expensive! Drop order.")
             item["ceiling_price"] = 0.0
             item["qty"] = 0
