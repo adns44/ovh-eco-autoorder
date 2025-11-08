@@ -218,6 +218,7 @@ def add_addons_to_servers():
     global user_preferences, all_dc
     catalog={}
     while True:
+        catalog={}
         logging.debug("Iterate over catalog fetcher.")
         for i in user_preferences["user_servers"]:
             server=i

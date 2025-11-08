@@ -10,6 +10,8 @@ In this program you can place orders VIA the OVHcloud API and start it as a scri
 
 > The API can be changed, removed or software can make any mistake that affects your order so use it on your own risk!
 
+> As this script fetches the OVHcloud server availability API and if required, the catalog API, requires a higher amount of data.
+
 ## Set it up
 
 Tested on subsidiary IE, probably work on others but it does not tested.
@@ -81,7 +83,7 @@ User servers is an array which contains the services. You need to fill an array 
 A server contains a few important information
 - The FQN, planCode, labels, addon planCodes, datacenters.
 > These informations  specified on [OVH API](https://eu.api.ovh.com/console/). See order and dedicated server sections.
-- QTY and ceiling price are two important variables. Sets the wanted quantity on a cart and sets the maximum monthly price (ex. setup fees). If price higher this the client do not order and set the qty, price to 0 to remove it from future checks.
+- QTY and ceiling price are two important variables. Sets the wanted quantity on a cart and sets the maximum 1st invoice price (excl. VAT). If price higher this the client do not order and set the qty, price to 0 to remove it from future checks. The first invoice can include the setup fees, so E.G. if you want to order KS-LE-B with 9.9 monthly and 9.9 euros setup price, you need to set a 20 eur ceiling price.
 - From the labels only one needed. Set dedicated_os.
 - The dedicated_datacenter is a label too. However if you set it in this JSON structure as in the example, the program simultaneous try to order in FRA and GRA. IF available in FRA or GRA, places and order and set qty to 0 (so stop order). This helps to order a server with multiple DC preferences, if the existence more important than the explicit location for a rare bare metal.
 > If you want to place an order both in gra and fra, simply create another item and modify the first to fra-only and second to gra-only. so datacenter array should contains only one element in both servers.
@@ -110,6 +112,8 @@ Subsidiary: Depends on your API endpoint. Used at creating orders. You can fetch
 > This feature is very very experimental. Use it on your own risk!!!
 
 > This feature fetches the EU API catalog. In the future it will be compatible with CA and US.
+
+> This feature consumes a high amount of data. Use it on your own risk!
 
 You can Instruct the API to look the server catalog and fetch the data from it when available.
 This feature helps you if you want to grab a server which shown on availability API but not available on the catalog yet. For example KS-LE-2 appeared in October as 25skle02 with low stock in rbx. If you set it you can order it after OVH fills it up into the cart.
