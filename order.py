@@ -64,8 +64,9 @@ def next_cart_expiration_date():
         one_month_later = current_time.replace(month=1)
         one_month_later = one_month_later.replace(year = current_time.year + 1)
     else:
-        one_month_later = current_time.replace(month=current_time.month + 1)
-        one_month_later = one_month_later.replace(day=27)
+        one_month_later = current_time.replace(day=27)
+        one_month_later = one_month_later.replace(month=current_time.month + 1)
+    print(one_month_later)
     out_string = one_month_later.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
     logging.debug("New expiration generated "+out_string)
     return out_string
@@ -194,7 +195,7 @@ def place_order(client, item, dc):
         try:
             order_result = client.post("/order/cart/"+item["dc_carts"][dedicated_datacenter]["cartId"]+"/checkout",
                 autoPayWithPreferredPaymentMethod = item["autopay"], # Indicates that order will be automatically paid with preferred payment method (type: boolean)
-                waiveRetractationPeriod = True, # Indicates that order will be processed with waiving retractation period (type: boolean)
+                waiveRetractationPeriod = False, # Indicates that order will be processed with waiving retractation period (type: boolean)
             )
             logging.info("Success! Order placed. Check the raw order in the cart for more info!")
         except ovh.exceptions.BadParametersError as ex:
